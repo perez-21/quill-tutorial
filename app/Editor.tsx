@@ -19,12 +19,12 @@ export default function Editor() {
   function save() {
     const editor = quillRef.current?.getEditor();
     const delta = editor?.getContents();
-    console.log(delta);
+    // TODO: save functionality
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between">
+    <div className="w-full p-4 md:p-30 flex flex-col gap-4">
+      <div className="flex justify-start gap-4">
       <button
         onClick={() => setIsReadOnly((prev) => !prev)}
         className="p-2 border rounded-lg hover:bg-emerald-950"
