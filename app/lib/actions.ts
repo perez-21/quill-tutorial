@@ -1,6 +1,8 @@
 "use server";
 
 import database from "@/app/lib/mongo";
+import webSocket from "./socket";
+
 export async function createNote() {
   try {
     const result = await database.collection("notes").findOne();
@@ -25,10 +27,12 @@ export async function createNote() {
 
 export async function updateNote(content: string | undefined) {
   try {
+    
     if (!content) {
       return { success: true };
     }
     const delta = JSON.parse(content);
+    
     database.collection("notes").updateOne({}, { $set: { content: delta } });
     return { success: true };
   } catch (err) {
@@ -36,6 +40,23 @@ export async function updateNote(content: string | undefined) {
     return { success: false };
   }
 }
+
+export async function sendNote(content: string | undefined) {
+  try {
+    
+    if (!content) {
+      return { success: true };
+    }
+      
+    webSocket.send(content);
+    return { success: true };
+
+  }
+  catch (error) {
+    console.error(error);
+    return { success: false }
+  }
+} 
 
 export async function getNote() {
   try {
